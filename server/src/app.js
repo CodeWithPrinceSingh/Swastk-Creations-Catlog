@@ -1,0 +1,38 @@
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+
+import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
+import storeRoutes from './routes/storeRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import { notFound, errorHandler } from './middleware/errorHandler.js';
+
+const app = express();
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(morgan('dev'));
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', dataSource: process.env.DATA_SOURCE || 'mock' });
+});
+
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/testimonials', testimonialRoutes);
+app.use('/api/store', storeRoutes);
+app.use('/api/admin', adminRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
+export default app;
