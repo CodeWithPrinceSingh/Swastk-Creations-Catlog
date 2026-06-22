@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_BASE_URL = 'https://swastk-creations-catlog.onrender.com';
 
-const API = axios.create({
+const api = axios.create({
   baseURL: API_BASE_URL ,
 });
 // Attach auth token to every request if present
