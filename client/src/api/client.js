@@ -2,10 +2,9 @@ import axios from 'axios';
 
 const API_BASE_URL = 'https://swastk-creations-catlog.onrender.com';
 
-export const api = axios.create({
-  baseURL: API_BASE_URL,
+const API = axios.create({
+  baseURL: API_BASE_URL ,
 });
-
 // Attach auth token to every request if present
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('bride_store_token');
