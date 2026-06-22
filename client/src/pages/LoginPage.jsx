@@ -58,7 +58,7 @@ export default function LoginPage() {
       </form>
 
       <p className="text-xs text-inkmuted mt-5 text-center">
-        Admin demo: admin@bridestore.com / Admin@123
+        
       </p>
     </AuthLayout>
   );
