@@ -14,7 +14,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || 'https://swastk-creations-catlog.vercel.app/',
+    origin: process.env.CLIENT_ORIGIN || 'https://swastk-creations-catlog-4rfjrvb0k-codewithprincesinghs-projects.vercel.app/',
     credentials: true,
   })
 );
