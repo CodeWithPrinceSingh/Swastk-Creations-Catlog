@@ -1,13 +1,14 @@
 import User from "../models/User.js";
 import Product from "../models/Product.js";
+import { serializeProduct } from "../utils/serialize.js";
 
 export const getWishlist = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate("wishlist");
 
-    res.json({
-      wishlist: user.wishlist,
-    });
+  res.json({
+  wishlist: user.wishlist.map(serializeProduct),
+});
   } catch (err) {
     res.status(500).json({
       message: err.message,
@@ -36,9 +37,9 @@ export const addWishlist = async (req, res) => {
 
     await user.populate("wishlist");
 
-    res.json({
-      wishlist: user.wishlist,
-    });
+res.json({
+  wishlist: user.wishlist.map(serializeProduct),
+});
   } catch (err) {
     res.status(500).json({
       message: err.message,
@@ -60,9 +61,9 @@ export const removeWishlist = async (req, res) => {
 
     await user.populate("wishlist");
 
-    res.json({
-      wishlist: user.wishlist,
-    });
+  res.json({
+  wishlist: user.wishlist.map(serializeProduct),
+});
   } catch (err) {
     res.status(500).json({
       message: err.message,
