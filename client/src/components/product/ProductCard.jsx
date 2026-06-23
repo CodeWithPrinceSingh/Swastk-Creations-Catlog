@@ -9,6 +9,7 @@ export default function ProductCard({ product }) {
 
   const [storeModalOpen, setStoreModalOpen] = useState(false);
   const { addToWishlist, isWishlisted } = useWishlist();
+   console.log(product);
 
 const wishlisted = isWishlisted(product);
   const discount = discountPercent(product.price, product.compareAtPrice);
