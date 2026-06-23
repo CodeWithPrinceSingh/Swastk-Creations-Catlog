@@ -9,6 +9,7 @@ import testimonialRoutes from './routes/testimonialRoutes.js';
 import storeRoutes from './routes/storeRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
+import wishlistRoutes from "./routes/wishlistRoutes.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/store', storeRoutes);
