@@ -10,7 +10,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
+          <WishlistProvider>
         <App />
+              </WishlistProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
