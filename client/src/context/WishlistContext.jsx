@@ -10,11 +10,14 @@ export const WishlistProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // Token localStorage se aa raha hai (login ke baad)
-  const token = JSON.parse(localStorage.getItem("auth"))?.token;
+  const TOKEN_KEY = "bride_store_token";
+const token = localStorage.getItem(TOKEN_KEY);
 
-  const headers = {
+const headers = {
+  headers: {
     Authorization: `Bearer ${token}`,
-  };
+  },
+};
 
   // Load wishlist from server
   const fetchWishlist = async () => {
@@ -25,9 +28,7 @@ export const WishlistProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.get(`${API}/api/wishlist`, {
-        headers,
-      });
+     await axios.get(`${API}/api/wishlist`, headers);
 
       setWishlist(res.data.wishlist);
     } catch (err) {
@@ -46,22 +47,18 @@ export const WishlistProvider = ({ children }) => {
       const exists = wishlist.find((item) => item._id === product._id);
 
       if (exists) {
-        const res = await axios.delete(
-          `${API}/api/wishlist/${product._id}`,
-          {
-            headers,
-          }
-        );
+     await axios.delete(
+  `${API}/api/wishlist/${product._id}`,
+  headers
+);
 
         setWishlist(res.data.wishlist);
       } else {
-        const res = await axios.post(
-          `${API}/api/wishlist/${product._id}`,
-          {},
-          {
-            headers,
-          }
-        );
+    await axios.post(
+  `${API}/api/wishlist/${product._id}`,
+  {},
+  headers
+);
 
         setWishlist(res.data.wishlist);
       }
