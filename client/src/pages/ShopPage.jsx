@@ -44,6 +44,13 @@ export default function ShopPage() {
     setSearchParams(next);
   };
 
+  const goToPage = (pageNumber) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('page', String(pageNumber));
+    setSearchParams(next);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const activeCategoryName = categories.find((c) => c.id === category)?.name;
 
   return (
@@ -125,7 +132,7 @@ export default function ShopPage() {
                   {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((p) => (
                     <button
                       key={p}
-                      onClick={() => updateParam('page', String(p))}
+                      onClick={() => goToPage(p)}
                       className={`w-9 h-9 rounded-full text-sm font-medium transition-colors ${
                         p === page ? 'bg-rose-600 text-white' : 'border border-rose-200 text-ink hover:bg-blush'
                       }`}
