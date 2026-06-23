@@ -1,39 +1,87 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 const WishlistContext = createContext();
 
+const API = import.meta.env.VITE_API_URL;
+
 export const WishlistProvider = ({ children }) => {
-  const [wishlist, setWishlist] = useState(() => {
-    const saved = localStorage.getItem("wishlist");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  }, [wishlist]);
+  // Token localStorage se aa raha hai (login ke baad)
+  const token = JSON.parse(localStorage.getItem("auth"))?.token;
 
-  const addToWishlist = (product) => {
-  setWishlist((prev) => {
-    const exist = prev.find((item) => item.id === product.id);
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
 
-    if (exist) {
-      return prev.filter((item) => item.id !== product.id);
+  // Load wishlist from server
+  const fetchWishlist = async () => {
+    if (!token) {
+      setWishlist([]);
+      setLoading(false);
+      return;
     }
 
-    return [...prev, product];
-  });
-};
+    try {
+      const res = await axios.get(`${API}/api/wishlist`, {
+        headers,
+      });
 
-const isWishlisted = (product) => {
-  return wishlist.some((item) => item.id === product.id);
-};
+      setWishlist(res.data.wishlist);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+  const addToWishlist = async (product) => {
+    try {
+      const exists = wishlist.find((item) => item._id === product._id);
+
+      if (exists) {
+        const res = await axios.delete(
+          `${API}/api/wishlist/${product._id}`,
+          {
+            headers,
+          }
+        );
+
+        setWishlist(res.data.wishlist);
+      } else {
+        const res = await axios.post(
+          `${API}/api/wishlist/${product._id}`,
+          {},
+          {
+            headers,
+          }
+        );
+
+        setWishlist(res.data.wishlist);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const isWishlisted = (product) => {
+    return wishlist.some((item) => item._id === product._id);
+  };
 
   return (
     <WishlistContext.Provider
       value={{
         wishlist,
+        loading,
         addToWishlist,
         isWishlisted,
+        fetchWishlist,
       }}
     >
       {children}
