@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useWishlist } from '../../context/WishlistContext.jsx';
 import { Heart, Store } from 'lucide-react';
 import { formatPrice, discountPercent } from '../../utils/format.js';
 import VisitStoreModal from './VisitStoreModal.jsx';
 
 export default function ProductCard({ product }) {
-  const [wishlisted, setWishlisted] = useState(false);
+
   const [storeModalOpen, setStoreModalOpen] = useState(false);
+  const { addToWishlist, isWishlisted } = useWishlist();
+
+const wishlisted = isWishlisted(product);
   const discount = discountPercent(product.price, product.compareAtPrice);
 
   return (
@@ -24,10 +28,10 @@ export default function ProductCard({ product }) {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            setWishlisted((w) => !w);
-          }}
+         onClick={(e) => {
+  e.preventDefault();
+  addToWishlist(product);
+}}
           aria-label="Add to wishlist"
           className="absolute top-3 right-3 z-10 bg-white/90 rounded-full p-2 hover:bg-white transition-colors"
         >
