@@ -1,10 +1,13 @@
 import { verifyToken } from '../utils/token.js';
 import { db } from '../data/store.js';
+import User from '../models/User.js';
+import { isMongoMode } from '../utils/dataSource.js';
+import { serializeUser } from '../utils/serialize.js';
 
 /**
  * Requires a valid Bearer token. Attaches req.user (sans password) on success.
  */
-export const requireAuth = (req, res, next) => {
+export const requireAuth = async (req, res, next) => {
   const header = req.headers.authorization || '';
   const token = header.startsWith('Bearer ') ? header.slice(7) : null;
 
@@ -14,8 +17,17 @@ export const requireAuth = (req, res, next) => {
 
   try {
     const decoded = verifyToken(token);
-    const user = db.users.find((u) => u.id === decoded.id);
 
+    if (isMongoMode()) {
+      const userDoc = await User.findById(decoded.id);
+      if (!userDoc) {
+        return res.status(401).json({ message: 'Your session is no longer valid. Please sign in again.' });
+      }
+      req.user = serializeUser(userDoc);
+      return next();
+    }
+
+    const user = db.users.find((u) => u.id === decoded.id);
     if (!user) {
       return res.status(401).json({ message: 'Your session is no longer valid. Please sign in again.' });
     }
