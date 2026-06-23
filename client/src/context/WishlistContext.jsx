@@ -13,35 +13,20 @@ export const WishlistProvider = ({ children }) => {
   }, [wishlist]);
 
   const addToWishlist = (product) => {
-    setWishlist((prev) => {
-      const exist = prev.find(
-        (item) =>
-          item._id === product._id ||
-          item.id === product.id ||
-          item.slug === product.slug
-      );
+  setWishlist((prev) => {
+    const exist = prev.find((item) => item.id === product.id);
 
-      if (exist) {
-        return prev.filter(
-          (item) =>
-            item._id !== product._id &&
-            item.id !== product.id &&
-            item.slug !== product.slug
-        );
-      }
+    if (exist) {
+      return prev.filter((item) => item.id !== product.id);
+    }
 
-      return [...prev, product];
-    });
-  };
+    return [...prev, product];
+  });
+};
 
-  const isWishlisted = (product) => {
-    return wishlist.some(
-      (item) =>
-        item._id === product._id ||
-        item.id === product.id ||
-        item.slug === product.slug
-    );
-  };
+const isWishlisted = (product) => {
+  return wishlist.some((item) => item.id === product.id);
+};
 
   return (
     <WishlistContext.Provider
