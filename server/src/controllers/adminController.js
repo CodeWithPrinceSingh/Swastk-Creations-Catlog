@@ -1,7 +1,39 @@
 import { db } from '../data/store.js';
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
+import User from '../models/User.js';
+import { isMongoMode } from '../utils/dataSource.js';
+import { serializeUser } from '../utils/serialize.js';
 
 export const getDashboardStats = async (req, res, next) => {
   try {
+    if (isMongoMode()) {
+      const [totalProducts, totalCategories, totalCustomers, outOfStock, lowStockDocs, categories] =
+        await Promise.all([
+          Product.countDocuments(),
+          Category.countDocuments(),
+          User.countDocuments({ role: 'customer' }),
+          Product.countDocuments({ stock: 0 }),
+          Product.find({ stock: { $gt: 0, $lte: 5 } }).select('name stock'),
+          Category.find(),
+        ]);
+
+      const productsByCategory = await Promise.all(
+        categories.map(async (cat) => ({
+          id: String(cat._id),
+          name: cat.name,
+          count: await Product.countDocuments({ category: cat._id }),
+        }))
+      );
+
+      return res.json({
+        stats: { totalProducts, totalCategories, totalCustomers, outOfStock },
+        lowStock: lowStockDocs.map((p) => ({ id: String(p._id), name: p.name, stock: p.stock })),
+        productsByCategory,
+      });
+    }
+
+    // ---- Mock mode ----
     const totalProducts = db.products.length;
     const totalCategories = db.categories.length;
     const totalCustomers = db.users.filter((u) => u.role === 'customer').length;
@@ -29,6 +61,11 @@ export const getDashboardStats = async (req, res, next) => {
 
 export const listUsers = async (req, res, next) => {
   try {
+    if (isMongoMode()) {
+      const docs = await User.find().sort({ createdAt: -1 });
+      return res.json({ users: docs.map(serializeUser) });
+    }
+
     const users = db.users.map((u) => ({
       id: u.id,
       name: u.name,

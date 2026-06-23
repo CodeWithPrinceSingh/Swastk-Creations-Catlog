@@ -1,6 +1,16 @@
 import { db } from '../data/store.js';
+import Product from '../models/Product.js';
+import { isMongoMode } from '../utils/dataSource.js';
+import { serializeProduct } from '../utils/serialize.js';
 
 const PAGE_SIZE_DEFAULT = 12;
+
+const slugify = (name) =>
+  name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 
 export const listProducts = async (req, res, next) => {
   try {
@@ -15,6 +25,61 @@ export const listProducts = async (req, res, next) => {
       tag,
     } = req.query;
 
+    const pageNum = Math.max(1, Number(page));
+    const size = Math.max(1, Number(pageSize));
+
+    if (isMongoMode()) {
+      const filter = {};
+      if (category) filter.category = category;
+      if (tag) filter.tags = tag;
+      if (search) {
+        filter.$or = [
+          { name: { $regex: search, $options: 'i' } },
+          { description: { $regex: search, $options: 'i' } },
+        ];
+      }
+      if (minPrice || maxPrice) {
+        filter.price = {};
+        if (minPrice) filter.price.$gte = Number(minPrice);
+        if (maxPrice) filter.price.$lte = Number(maxPrice);
+      }
+
+      let sortSpec = {};
+      switch (sort) {
+        case 'price_asc':
+          sortSpec = { price: 1 };
+          break;
+        case 'price_desc':
+          sortSpec = { price: -1 };
+          break;
+        case 'rating':
+          sortSpec = { rating: -1 };
+          break;
+        case 'newest':
+          sortSpec = { isNew: -1, createdAt: -1 };
+          break;
+        default:
+          sortSpec = { createdAt: -1 };
+      }
+
+      const total = await Product.countDocuments(filter);
+      const docs = await Product.find(filter)
+        .sort(sortSpec)
+        .skip((pageNum - 1) * size)
+        .limit(size);
+
+      return res.json({
+        products: docs.map(serializeProduct),
+        pagination: {
+          total,
+          page: pageNum,
+          pageSize: size,
+          totalPages: Math.ceil(total / size) || 1,
+        },
+      });
+    }
+
+    // ---- Mock mode ----
     let results = [...db.products];
 
     if (category) {
@@ -55,8 +120,6 @@ export const listProducts = async (req, res, next) => {
     }
 
     const total = results.length;
-    const pageNum = Math.max(1, Number(page));
-    const size = Math.max(1, Number(pageSize));
     const start = (pageNum - 1) * size;
     const paginated = results.slice(start, start + size);
 
@@ -76,6 +139,12 @@ export const listProducts = async (req, res, next) => {
 
 export const getProductBySlug = async (req, res, next) => {
   try {
+    if (isMongoMode()) {
+      const doc = await Product.findOne({ slug: req.params.slug });
+      if (!doc) return res.status(404).json({ message: 'We could not find that product.' });
+      return res.json({ product: serializeProduct(doc) });
+    }
+
     const product = db.products.find((p) => p.slug === req.params.slug);
     if (!product) {
       return res.status(404).json({ message: 'We could not find that product.' });
@@ -88,6 +157,11 @@ export const getProductBySlug = async (req, res, next) => {
 
 export const getFeaturedProducts = async (req, res, next) => {
   try {
+    if (isMongoMode()) {
+      const docs = await Product.find({ tags: 'bestseller' }).limit(5);
+      return res.json({ products: docs.map(serializeProduct) });
+    }
+
     const featured = db.products.filter((p) => p.tags?.includes('bestseller')).slice(0, 5);
     res.json({ products: featured });
   } catch (err) {
@@ -104,14 +178,33 @@ export const createProduct = async (req, res, next) => {
       return res.status(400).json({ message: 'Name, category, and price are required.' });
     }
 
-    const slug =
-      body.slug ||
-      body.name
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '');
+    const slug = body.slug || slugify(body.name);
 
+    if (isMongoMode()) {
+      const exists = await Product.findOne({ slug });
+      if (exists) {
+        return res.status(409).json({ message: 'A product with this name/slug already exists.' });
+      }
+
+      const doc = await Product.create({
+        name: body.name,
+        slug,
+        category: body.category,
+        price: Number(body.price),
+        compareAtPrice: body.compareAtPrice ? Number(body.compareAtPrice) : undefined,
+        isNew: body.isNew ?? true,
+        description: body.description || '',
+        images: body.images || [],
+        sizes: body.sizes || [],
+        colors: body.colors || [],
+        stock: body.stock != null ? Number(body.stock) : 0,
+        tags: body.tags || [],
+      });
+
+      return res.status(201).json({ product: serializeProduct(doc) });
+    }
+
+    // ---- Mock mode ----
     const exists = db.products.find((p) => p.slug === slug);
     if (exists) {
       return res.status(409).json({ message: 'A product with this name/slug already exists.' });
@@ -144,6 +237,12 @@ export const createProduct = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
+    if (isMongoMode()) {
+      const doc = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      if (!doc) return res.status(404).json({ message: 'We could not find that product.' });
+      return res.json({ product: serializeProduct(doc) });
+    }
+
     const idx = db.products.findIndex((p) => p.id === req.params.id);
     if (idx === -1) {
       return res.status(404).json({ message: 'We could not find that product.' });
@@ -158,6 +257,12 @@ export const updateProduct = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
   try {
+    if (isMongoMode()) {
+      const doc = await Product.findByIdAndDelete(req.params.id);
+      if (!doc) return res.status(404).json({ message: 'We could not find that product.' });
+      return res.json({ message: 'Product deleted.' });
+    }
+
     const idx = db.products.findIndex((p) => p.id === req.params.id);
     if (idx === -1) {
       return res.status(404).json({ message: 'We could not find that product.' });
