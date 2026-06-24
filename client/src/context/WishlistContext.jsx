@@ -28,7 +28,11 @@ const headers = {
     }
 
     try {
-     await axios.get(`${API}/api/wishlist`, headers);
+     const res = await axios.get(
+  `${API}/api/wishlist`,
+  headers
+);
+
 
       setWishlist(res.data.wishlist);
     } catch (err) {
@@ -44,18 +48,22 @@ const headers = {
 
   const addToWishlist = async (product) => {
     try {
-      const exists = wishlist.find((item) => item._id === product._id);
+      const exists = wishlist.find(
+item => item.id===product.id
+);
 
       if (exists) {
-     await axios.delete(
-  `${API}/api/wishlist/${product._id}`,
-  headers
+const res = await axios.delete(
+`${API}/api/wishlist/${product.id}`,
+headers
 );
+
+setWishlist(res.data.wishlist);
 
         setWishlist(res.data.wishlist);
       } else {
-    await axios.post(
-  `${API}/api/wishlist/${product._id}`,
+const res = await axios.post(
+  `${API}/api/wishlist/${product.id}`,
   {},
   headers
 );
@@ -68,7 +76,9 @@ const headers = {
   };
 
   const isWishlisted = (product) => {
-    return wishlist.some((item) => item._id === product._id);
+   return wishlist.some(
+item=>item.id===product.id
+);
   };
 
   return (
