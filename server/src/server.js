@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
-const sitemapRoute = require("./routes/sitemap");
+
 import app from './app.js';
-app.use("/", sitemapRoute);
+
 import { connectMongo } from './utils/db.js';
 
 const PORT = process.env.PORT || 5000;
