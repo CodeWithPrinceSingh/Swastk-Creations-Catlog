@@ -15,6 +15,7 @@ const products = [...seedProducts];
 const categories = [...seedCategories];
 const testimonials = [...seedTestimonials];
 const users = [];
+const contactMessages = [];
 
 // Seed a default admin user so the admin panel is usable immediately.
 // Password: Admin@123 (hashed below)
@@ -36,5 +37,6 @@ export const db = {
   categories,
   testimonials,
   users,
+  contactMessages,
   uuid,
 };
