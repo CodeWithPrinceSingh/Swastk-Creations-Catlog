@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Hero from '../components/home/Hero.jsx';
 import CategoryGrid from '../components/home/CategoryGrid.jsx';
 import FeaturedProducts from '../components/home/FeaturedProducts.jsx';
-import WeddingSarees from '../components/home/WeddingSarees.jsx';
+import CategoryProductRow from '../components/home/CategoryProductRow.jsx';
 import ExclusiveBanner from '../components/home/ExclusiveBanner.jsx';
 import Testimonials from '../components/home/Testimonials.jsx';
 import NewsletterStrip from '../components/layout/NewsletterStrip.jsx';
@@ -47,7 +47,16 @@ export default function HomePage() {
       <Hero />
       <CategoryGrid categories={categories} />
       <FeaturedProducts products={products} />
-      <WeddingSarees />
+
+      {categories.map((cat, index) => (
+        <CategoryProductRow
+          key={cat.id}
+          category={cat}
+          eyebrow="HANDPICKED FOR YOU"
+          tinted={index % 2 === 0}
+        />
+      ))}
+
       <ExclusiveBanner />
       <Testimonials testimonials={testimonials} />
       <NewsletterStrip />
