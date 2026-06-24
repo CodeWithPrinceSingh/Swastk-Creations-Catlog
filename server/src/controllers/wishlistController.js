@@ -28,12 +28,18 @@ export const addWishlist = async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.user.id);
+    const user = if (!user.wishlist) {
+  user.wishlist = [];
+}
 
-    if (!user.wishlist.includes(productId)) {
-      user.wishlist.push(productId);
-      await user.save();
-    }
+   const exists = user.wishlist.some(
+  (id) => id.toString() === productId
+);
+
+if (!exists) {
+  user.wishlist.push(product._id);
+  await user.save();
+}
 
     await user.populate("wishlist");
 
@@ -51,7 +57,9 @@ export const removeWishlist = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    const user = await User.findById(req.user.id);
+    const user = if (!user.wishlist) {
+  user.wishlist = [];
+}
 
     user.wishlist = user.wishlist.filter(
       (id) => id.toString() !== productId
