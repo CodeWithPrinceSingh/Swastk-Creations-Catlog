@@ -1,11 +1,12 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Package, Tags, Users, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, Package, Tags, Users, MessageSquare, ArrowLeft } from 'lucide-react';
 
 const navItems = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/admin/products', label: 'Products', icon: Package },
   { to: '/admin/categories', label: 'Categories', icon: Tags },
   { to: '/admin/customers', label: 'Customers', icon: Users },
+  { to: '/admin/messages', label: 'Messages', icon: MessageSquare },
 ];
 
 export default function AdminLayout() {
