@@ -11,7 +11,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import contactRoutes from './routes/contactRoutes.js';
-import sitemapRoute from  "./routes/sitemap.js"
+const sitemapRoute = require('./routes/sitemap');
 
 
 const app = express();
