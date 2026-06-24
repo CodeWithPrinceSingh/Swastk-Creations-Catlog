@@ -87,6 +87,7 @@ export default function AdminProductsPage() {
           <thead>
             <tr className="border-b border-rose-100 text-left text-inkmuted text-xs">
               <th className="px-5 py-3 font-medium">Product</th>
+              <th className="px-5 py-3 font-medium">SKU</th>
               <th className="px-5 py-3 font-medium">Category</th>
               <th className="px-5 py-3 font-medium">Price</th>
               <th className="px-5 py-3 font-medium">Stock</th>
@@ -100,6 +101,7 @@ export default function AdminProductsPage() {
                   <img src={p.images?.[0]} alt="" className="w-10 h-12 rounded object-cover bg-blush" />
                   <span className="font-medium text-ink">{p.name}</span>
                 </td>
+                <td className="px-5 py-3 text-xs text-inkmuted font-mono">{p.sku || '—'}</td>
                 <td className="px-5 py-3 text-inkmuted">{categoryName(p.category)}</td>
                 <td className="px-5 py-3 text-ink">{formatPrice(p.price)}</td>
                 <td className="px-5 py-3">
