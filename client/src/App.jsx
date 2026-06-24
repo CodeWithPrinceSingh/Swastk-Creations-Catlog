@@ -21,6 +21,7 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage.jsx';
 import AdminProductsPage from './pages/admin/AdminProductsPage.jsx';
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage.jsx';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage.jsx';
+import AdminMessagesPage from './pages/admin/AdminMessagesPage.jsx';
 
 export default function App() {
   return (
@@ -57,6 +58,7 @@ export default function App() {
             <Route path="products" element={<AdminProductsPage />} />
             <Route path="categories" element={<AdminCategoriesPage />} />
             <Route path="customers" element={<AdminCustomersPage />} />
+            <Route path="messages" element={<AdminMessagesPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
