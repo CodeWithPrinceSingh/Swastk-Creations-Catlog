@@ -29,7 +29,7 @@ const headers = {
 
     try {
      const res = await axios.get(
-  `${API}/api/wishlist`,
+  `${API}/wishlist`,
   headers
 );
 
@@ -54,7 +54,7 @@ item => item.id===product.id
 
       if (exists) {
 const res = await axios.delete(
-`${API}/api/wishlist/${product.id}`,
+`${API}/wishlist/${product.id}`,
 headers
 );
 
@@ -63,7 +63,7 @@ setWishlist(res.data.wishlist);
         setWishlist(res.data.wishlist);
       } else {
 const res = await axios.post(
-  `${API}/api/wishlist/${product.id}`,
+  `${API}/wishlist/${product.id}`,
   {},
   headers
 );
