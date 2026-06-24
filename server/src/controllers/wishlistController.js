@@ -21,6 +21,7 @@ export const addWishlist = async (req, res) => {
     const { productId } = req.params;
 
     const product = await Product.findById(productId);
+    console.log("product:", product);
 
     if (!product) {
       return res.status(404).json({
@@ -29,6 +30,7 @@ export const addWishlist = async (req, res) => {
     }
 
 const user = await User.findById(req.user.id);
+    console.log("user:", user);
 
 if (!user.wishlist) {
   user.wishlist = [];
@@ -48,6 +50,8 @@ await user.populate("wishlist");
 res.json({
   wishlist: user.wishlist.map(serializeProduct),
 });
+    console.log("req.user:", req.user);
+console.log("productId:", req.params.productId);
   } catch (err) {
     console.error(err);
     res.status(500).json({
