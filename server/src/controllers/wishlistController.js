@@ -49,8 +49,10 @@ res.json({
   wishlist: user.wishlist.map(serializeProduct),
 });
   } catch (err) {
+    console.error(err);
     res.status(500).json({
       message: err.message,
+    
     });
   }
 };
@@ -75,8 +77,10 @@ export const removeWishlist = async (req, res) => {
   wishlist: user.wishlist.map(serializeProduct),
 });
   } catch (err) {
+    console.error(err);
     res.status(500).json({
       message: err.message,
+      
     });
   }
 };
