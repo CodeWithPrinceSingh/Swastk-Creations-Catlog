@@ -47,3 +47,16 @@ export const serializeUser = (doc) => {
     createdAt: obj.createdAt,
   };
 };
+
+export const serializeContactMessage = (doc) => {
+  if (!doc) return null;
+  const obj = doc.toObject ? doc.toObject() : doc;
+  return {
+    id: String(obj._id),
+    name: obj.name,
+    email: obj.email,
+    message: obj.message,
+    status: obj.status,
+    createdAt: obj.createdAt,
+  };
+};
