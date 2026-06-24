@@ -1,6 +1,6 @@
-const express = require("express");
-const { SitemapStream, streamToPromise } = require("sitemap");
-const Product = require("../models/Product"); // Update path if different
+import express from "express";
+import { SitemapStream, streamToPromise } from "sitemap";
+import Product from "../models/Product.js"; // adjust path if needed
 
 const router = express.Router();
 
@@ -41,4 +41,4 @@ router.get("/sitemap.xml", async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
