@@ -11,9 +11,11 @@ import adminRoutes from './routes/adminRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import contactRoutes from './routes/contactRoutes.js';
+const sitemapRoute = require("./routes/sitemap");
 
 const app = express();
 
+app.use("/", sitemapRoute);
 app.use(
   cors({
     origin: process.env.CLIENT_ORIGIN || 'https://swastik-creations-catlog.vercel.app',
