@@ -28,11 +28,13 @@ export const addWishlist = async (req, res) => {
       });
     }
 
-    const user = if (!user.wishlist) {
+const user = await User.findById(req.user.id);
+
+if (!user.wishlist) {
   user.wishlist = [];
 }
 
-   const exists = user.wishlist.some(
+const exists = user.wishlist.some(
   (id) => id.toString() === productId
 );
 
@@ -41,7 +43,7 @@ if (!exists) {
   await user.save();
 }
 
-    await user.populate("wishlist");
+await user.populate("wishlist");
 
 res.json({
   wishlist: user.wishlist.map(serializeProduct),
