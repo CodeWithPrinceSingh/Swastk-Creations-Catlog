@@ -11,11 +11,10 @@ import adminRoutes from './routes/adminRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import contactRoutes from './routes/contactRoutes.js';
-
-
+import sitemapRoutes from './routes/sitemapRoutes.js';
+import { getRobotsTxt } from './controllers/robotsController.js';
 
 const app = express();
-
 
 app.use(
   cors({
@@ -38,6 +37,8 @@ app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/store', storeRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/sitemap.xml', sitemapRoutes);
+app.get('/robots.txt', getRobotsTxt);
 
 app.use(notFound);
 app.use(errorHandler);
