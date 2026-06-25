@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 const shopLinks = [
-  ['Bridal Lehengas', '/shop?category=cat-lehengas'],
-  ['Wedding Sarees', '/shop?category=cat-sarees'],
-  ['Bridal Jewellery', '/shop?category=cat-jewellery'],
-  ['Bridal Makeup', '/shop?category=cat-makeup'],
+  ['Bridal Lehengas', '/shop?category=6a3a4ffd5cea058befca96ab'],
+  ['Wedding Sarees', '/shop?category=6a3a7b4c806a3dcc5365eee4'],
+  ['Bridal Jewellery', '/shop?category=6a3a634e1ba6ec2a4e9f6c68'],
+  ['Bridal Footwear', '/shop?category=6a3a634e1ba6ec2a4e9f6c6e'],
 ];
 
 const careLinks = [
