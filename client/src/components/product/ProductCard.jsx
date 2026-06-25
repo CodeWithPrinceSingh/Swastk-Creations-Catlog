@@ -15,7 +15,7 @@ const wishlisted = isWishlisted(product);
   const discount = discountPercent(product.price, product.compareAtPrice);
 
   return (
-    <div className="group max-w-[220px] mx-auto w-full">
+    <div className="group">
       <Link to={`/product/${product.slug}`} className="block relative overflow-hidden rounded-lg bg-blush aspect-[3/4]">
         {product.isNew && (
           <span className="absolute top-3 left-3 z-10 bg-ink text-white text-[10px] font-semibold tracking-wide px-2.5 py-1 rounded">
