@@ -3,6 +3,7 @@ import Header from './components/layout/Header.jsx';
 import Footer from './components/layout/Footer.jsx';
 import AnnouncementBar from './components/layout/AnnouncementBar.jsx';
 import { AdminRoute } from './components/auth/RouteGuards.jsx';
+import ScrollToTop from './components/common/ScrollToTop.jsx';
 
 import HomePage from './pages/HomePage.jsx';
 import ShopPage from './pages/ShopPage.jsx';
@@ -26,6 +27,7 @@ import AdminMessagesPage from './pages/admin/AdminMessagesPage.jsx';
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-cream">
+      <ScrollToTop />
       <AnnouncementBar />
       <Header />
 
