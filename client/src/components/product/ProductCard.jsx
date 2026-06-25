@@ -6,16 +6,14 @@ import { formatPrice, discountPercent } from '../../utils/format.js';
 import VisitStoreModal from './VisitStoreModal.jsx';
 
 export default function ProductCard({ product }) {
-
   const [storeModalOpen, setStoreModalOpen] = useState(false);
   const { addToWishlist, isWishlisted } = useWishlist();
-   console.log(product);
 
-const wishlisted = isWishlisted(product);
+  const wishlisted = isWishlisted(product);
   const discount = discountPercent(product.price, product.compareAtPrice);
 
   return (
-    <div className="group  w-full max-w-[280px] mx-auto">
+    <div className="group min-w-0">
       <Link to={`/product/${product.slug}`} className="block relative overflow-hidden rounded-lg bg-blush aspect-[3/4]">
         {product.isNew && (
           <span className="absolute top-3 left-3 z-10 bg-ink text-white text-[10px] font-semibold tracking-wide px-2.5 py-1 rounded">
@@ -46,7 +44,7 @@ const wishlisted = isWishlisted(product);
             {product.name}
           </h3>
         </Link>
-        <div className="flex items-center gap-2 mt-1.5">
+        <div className="flex items-center gap-2 mt-1.5 flex-wrap min-w-0">
           <span className="text-sm font-semibold text-ink">{formatPrice(product.price)}</span>
           {product.compareAtPrice > product.price && (
             <>
