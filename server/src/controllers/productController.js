@@ -1,5 +1,6 @@
 import { db } from '../data/store.js';
 import Product from '../models/Product.js';
+import Category from '../models/Category.js';
 import { isMongoMode } from '../utils/dataSource.js';
 import { serializeProduct } from '../utils/serialize.js';
 
@@ -11,6 +12,10 @@ const slugify = (name) =>
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+
+// Combines the name-based slug with the SKU so that two products sharing
+// the same name still get distinct, URL-safe slugs.
+const buildSlug = (name, sku) => `${slugify(name)}-${slugify(sku)}`;
 
 export const listProducts = async (req, res, next) => {
   try {
@@ -32,12 +37,27 @@ export const listProducts = async (req, res, next) => {
       const filter = {};
       if (category) filter.category = category;
       if (tag) filter.tags = tag;
+
       if (search) {
+        const regex = { $regex: search, $options: 'i' };
+
+        // Find categories whose name matches the search text too, so
+        // searching "jewellery" surfaces every product in that category
+        // even if the word never appears in the product's own fields.
+        const matchingCategories = await Category.find({ name: regex }).select('_id');
+        const matchingCategoryIds = matchingCategories.map((c) => c._id);
+
         filter.$or = [
-          { name: { $regex: search, $options: 'i' } },
-          { description: { $regex: search, $options: 'i' } },
+          { name: regex },
+          { description: regex },
+          { sku: regex },
+          { tags: regex },
+          { colors: regex },
+          { sizes: regex },
+          ...(matchingCategoryIds.length ? [{ category: { $in: matchingCategoryIds } }] : []),
         ];
       }
+
       if (minPrice || maxPrice) {
         filter.price = {};
         if (minPrice) filter.price.$gte = Number(minPrice);
@@ -90,10 +110,29 @@ export const listProducts = async (req, res, next) => {
     }
     if (search) {
       const q = search.toLowerCase();
-      results = results.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
-      );
+
+      // Category IDs whose name matches the search text, so searching
+      // "jewellery" surfaces every product in that category even if the
+      // word never appears in the product's own fields.
+      const matchingCategoryIds = db.categories
+        .filter((c) => c.name.toLowerCase().includes(q))
+        .map((c) => c.id);
+
+      results = results.filter((p) => {
+        const haystack = [
+          p.name,
+          p.description,
+          p.sku,
+          ...(p.tags || []),
+          ...(p.colors || []),
+          ...(p.sizes || []),
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+
+        return haystack.includes(q) || matchingCategoryIds.includes(p.category);
+      });
     }
     if (minPrice) {
       results = results.filter((p) => p.price >= Number(minPrice));
@@ -174,20 +213,22 @@ export const getFeaturedProducts = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
   try {
     const body = req.body;
-    if (!body.name || !body.category || body.price == null) {
-      return res.status(400).json({ message: 'Name, category, and price are required.' });
+    if (!body.name || !body.sku || !body.category || body.price == null) {
+      return res.status(400).json({ message: 'Name, SKU, category, and price are required.' });
     }
 
-    const slug = body.slug || slugify(body.name);
+    const sku = String(body.sku).trim().toUpperCase();
+    const slug = body.slug || buildSlug(body.name, sku);
 
     if (isMongoMode()) {
-      const exists = await Product.findOne({ slug });
+      const exists = await Product.findOne({ sku });
       if (exists) {
-        return res.status(409).json({ message: 'A product with this name/slug already exists.' });
+        return res.status(409).json({ message: `A product with SKU "${sku}" already exists.` });
       }
 
       const doc = await Product.create({
         name: body.name,
+        sku,
         slug,
         category: body.category,
         price: Number(body.price),
@@ -205,14 +246,15 @@ export const createProduct = async (req, res, next) => {
     }
 
     // ---- Mock mode ----
-    const exists = db.products.find((p) => p.slug === slug);
+    const exists = db.products.find((p) => p.sku === sku);
     if (exists) {
-      return res.status(409).json({ message: 'A product with this name/slug already exists.' });
+      return res.status(409).json({ message: `A product with SKU "${sku}" already exists.` });
     }
 
     const product = {
       id: db.uuid(),
       name: body.name,
+      sku,
       slug,
       category: body.category,
       price: Number(body.price),
