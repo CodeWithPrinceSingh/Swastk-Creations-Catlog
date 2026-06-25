@@ -1,6 +1,16 @@
 {
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "https://swastk-creations-catlog.onrender.com/sitemap.xml" },
-    { "source": "/robots.txt", "destination": "https://swastk-creations-catlog.onrender.com/robots.txt" }
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://swastk-creations-catlog.onrender.com/sitemap.xml"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "https://swastk-creations-catlog.onrender.com/robots.txt"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
