@@ -44,13 +44,17 @@ export default function ProductCard({ product }) {
             {product.name}
           </h3>
         </Link>
-        <div className="flex items-center gap-2 mt-1.5 flex-wrap min-w-0">
-          <span className="text-sm font-semibold text-ink">{formatPrice(product.price)}</span>
-          {product.compareAtPrice > product.price && (
-            <>
-              <span className="text-xs text-inkmuted line-through">{formatPrice(product.compareAtPrice)}</span>
-              {discount > 0 && <span className="text-xs text-rose-600 font-medium">{discount}% off</span>}
-            </>
+        <div className="mt-1.5 min-w-0">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="text-sm font-semibold text-ink whitespace-nowrap">{formatPrice(product.price)}</span>
+            {product.compareAtPrice > product.price && (
+              <span className="text-xs text-inkmuted line-through whitespace-nowrap">
+                {formatPrice(product.compareAtPrice)}
+              </span>
+            )}
+          </div>
+          {discount > 0 && product.compareAtPrice > product.price && (
+            <span className="text-xs text-rose-600 font-medium block mt-0.5">{discount}% off</span>
           )}
         </div>
         <button
