@@ -85,7 +85,7 @@ export default function ShopPage() {
         {mobileFiltersOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-ink/40" onClick={() => setMobileFiltersOpen(false)} />
-            <div className="absolute right-0 top-0 h-full w-80 bg-cream p-6 overflow-y-auto">
+            <div className="absolute right-0 top-0 h-full w-[85vw] max-w-80 bg-cream p-6 overflow-y-auto">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-display text-xl">Filters & Sort</h2>
                 <button onClick={() => setMobileFiltersOpen(false)} aria-label="Close filters">
@@ -121,10 +121,11 @@ export default function ShopPage() {
             />
           ) : (
             <>
-             
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-8">
                 {products.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                  <div key={p.id} className="min-w-0">
+                    <ProductCard product={p} />
+                  </div>
                 ))}
               </div>
 
