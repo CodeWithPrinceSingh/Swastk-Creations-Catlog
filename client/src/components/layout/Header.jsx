@@ -149,6 +149,13 @@ export default function Header() {
               {label}
             </Link>
           ))}
+          <Link
+            to="/wishlist"
+            onClick={() => setMobileOpen(false)}
+            className="text-sm font-medium py-1 flex items-center gap-2"
+          >
+            <Heart size={16} /> Wishlist
+          </Link>
           <button
             onClick={() => {
               setStoreModalOpen(true);
