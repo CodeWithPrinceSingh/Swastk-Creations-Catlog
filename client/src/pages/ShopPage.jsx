@@ -71,15 +71,17 @@ export default function ShopPage() {
         <SlidersHorizontal size={15} /> Filters & Sort
       </button>
 
-      <div className="grid lg:grid-cols-[220px_1fr] gap-10">
+      <div className="grid lg:grid-cols-[260px_1fr] gap-10">
         <aside className="hidden lg:block">
-          <ShopFilters
-            categories={categories}
-            activeCategory={category}
-            onCategoryChange={(val) => updateParam('category', val)}
-            sort={sort}
-            onSortChange={(val) => updateParam('sort', val)}
-          />
+          <div className="bg-white border border-rose-100 rounded-xl p-6 sticky top-24">
+            <ShopFilters
+              categories={categories}
+              activeCategory={category}
+              onCategoryChange={(val) => updateParam('category', val)}
+              sort={sort}
+              onSortChange={(val) => updateParam('sort', val)}
+            />
+          </div>
         </aside>
 
         {mobileFiltersOpen && (
@@ -109,7 +111,7 @@ export default function ShopPage() {
           </div>
         )}
 
-        <div>
+        <div className="min-w-0">
           {loading ? (
             <Loader label="Finding beautiful things..." />
           ) : products.length === 0 ? (
