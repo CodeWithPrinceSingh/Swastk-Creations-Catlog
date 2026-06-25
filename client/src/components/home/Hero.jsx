@@ -9,7 +9,7 @@ const slides = [
     titleB: 'Ever',
     titleC: 'After',
     copy: 'Exquisite Bridal Collection for the Most Memorable Day of Your Life.',
-    cta: '/shop',
+    cta: '/shop?category=6a3a4ffd5cea058befca96ab',
     image:
       'https://res.cloudinary.com/dfywwcbpw/image/upload/v1781951603/e7fa9192-1047-43e4-802a-275eb32a6815_sgueqk.png',
   },
@@ -19,7 +19,7 @@ const slides = [
     titleB: 'Tradition',
     titleC: '',
     copy: 'Handpicked Jewellery and Silks for Every Ceremony.',
-    cta: '/shop?category=cat-jewellery',
+    cta: '/shop?category=6a3a634e1ba6ec2a4e9f6c68',
     image:
       'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1400&q=80',
   },
@@ -29,7 +29,7 @@ const slides = [
     titleB: 'to',
     titleC: 'Reception',
     copy: 'Curated Looks for Every Moment of Your Celebration.',
-    cta: '/shop',
+    cta: '/shop?category=6a3a634f1ba6ec2a4e9f6c77',
     image:
       'https://res.cloudinary.com/dfywwcbpw/image/upload/v1781952150/98346fab-971d-43a0-8249-7cab03548293_cge9ui.png',
   },
