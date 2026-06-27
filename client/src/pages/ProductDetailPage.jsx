@@ -8,6 +8,7 @@ import VisitStoreModal from '../components/product/VisitStoreModal.jsx';
 import ImageLightbox from '../components/common/ImageLightbox.jsx';
 import RecentlyViewed from '../components/home/RecentlyViewed.jsx';
 import RecommendedProducts from '../components/home/RecommendedProducts.jsx';
+import ReviewSection from '../components/product/ReviewSection.jsx';
 import { ProductDetailSkeleton } from '../components/common/Skeleton.jsx';
 import { formatPrice, discountPercent } from '../utils/format.js';
 import { useWishlist } from '../context/WishlistContext.jsx';
@@ -43,6 +44,14 @@ export default function ProductDetailPage() {
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
+
+  // Re-fetch the product after a review is added/updated/deleted so the
+  // average rating + review count shown above stays in sync.
+  const refreshRating = () => {
+    fetchProductBySlug(slug)
+      .then((res) => setProduct(res.product))
+      .catch(() => {});
+  };
 
   if (loading) {
     return (
@@ -219,6 +228,8 @@ export default function ProductDetailPage() {
           onClose={() => setStoreModalOpen(false)}
           productName={product.name}
         />
+
+        <ReviewSection productId={product.id} onRatingUpdate={refreshRating} />
       </div>
 
       <RecentlyViewed excludeProductId={product.id} />
