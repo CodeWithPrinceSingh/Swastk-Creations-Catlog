@@ -87,3 +87,49 @@ select:focus-visible {
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
 }
+
+/* Toast notifications — used by ToastContext.jsx */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.25s ease-out;
+}
+
+/* Skeleton loading shimmer — used by Skeleton.jsx */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f3e4dd 25%, #fbeee8 37%, #f3e4dd 63%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Lightbox fade-in — used by ImageLightbox.jsx */
+@keyframes lightbox-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-lightbox-in {
+  animation: lightbox-fade-in 0.2s ease-out;
+}
