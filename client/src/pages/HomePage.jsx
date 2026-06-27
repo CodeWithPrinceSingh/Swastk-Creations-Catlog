@@ -48,16 +48,16 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-        <Reveal>
-        <QuizBanner />
-      </Reveal>
+        
 
       <Reveal>
         <CategoryGrid categories={categories} />
       </Reveal>
 
       <StatsBanner />
-
+<Reveal>
+        <QuizBanner />
+      </Reveal>
       <Reveal>
         <FeaturedProducts products={products} />
       </Reveal>
