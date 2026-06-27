@@ -7,6 +7,7 @@ import Loader from '../components/common/Loader.jsx';
 import VisitStoreModal from '../components/product/VisitStoreModal.jsx';
 import ImageLightbox from '../components/common/ImageLightbox.jsx';
 import RecentlyViewed from '../components/home/RecentlyViewed.jsx';
+import RecommendedProducts from '../components/home/RecommendedProducts.jsx';
 import { ProductDetailSkeleton } from '../components/common/Skeleton.jsx';
 import { formatPrice, discountPercent } from '../utils/format.js';
 import { useWishlist } from '../context/WishlistContext.jsx';
@@ -221,6 +222,8 @@ export default function ProductDetailPage() {
       </div>
 
       <RecentlyViewed excludeProductId={product.id} />
+
+      <RecommendedProducts categoryId={product.category} excludeProductId={product.id} />
 
       <ImageLightbox
         images={product.images}
