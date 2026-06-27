@@ -66,3 +66,24 @@ select:focus-visible {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Sparkle burst — used by SparkleBurst.jsx when adding to wishlist */
+@keyframes sparkle-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1);
+    opacity: 0;
+  }
+}
+
+.sparkle-particle {
+  animation-name: sparkle-pop;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
