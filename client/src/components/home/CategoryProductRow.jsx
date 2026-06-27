@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '../product/ProductCard.jsx';
 import SectionHeading from '../common/SectionHeading.jsx';
-import Loader from '../common/Loader.jsx';
+import { ProductCardSkeleton } from '../common/Skeleton.jsx';
 import { fetchProducts } from '../../api/products.js';
 
 // Splits a category name into a "title" + "accent" pair for SectionHeading,
@@ -32,9 +32,10 @@ export default function CategoryProductRow({ category, eyebrow, tinted = false }
     scrollerRef.current?.scrollBy({ left: dir * 320, behavior: 'smooth' });
   };
 
-  if (loading) return <Loader label={`Loading ${category.name}...`} />;
-  // No point showing an empty section for a category with no products yet.
-  if (items.length === 0) return null;
+  // While loading, we don't yet know the category name will have products,
+  // but showing nothing causes a layout jump once data arrives — so we show
+  // a skeleton row instead of hiding the whole section.
+  if (!loading && items.length === 0) return null;
 
   const { title, accent } = splitName(category.name);
 
@@ -45,12 +46,14 @@ export default function CategoryProductRow({ category, eyebrow, tinted = false }
           <div className="flex-1">
             <SectionHeading eyebrow={eyebrow} title={title} accent={accent} align="left" />
           </div>
-          <Link
-            to={`/shop?category=${category.id}`}
-            className="hidden sm:inline-block text-xs font-semibold tracking-wide border border-rose-300 text-rose-600 rounded-full px-5 py-2.5 hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-colors -mt-10 whitespace-nowrap"
-          >
-            VIEW ALL
-          </Link>
+          {!loading && (
+            <Link
+              to={`/shop?category=${category.id}`}
+              className="hidden sm:inline-block text-xs font-semibold tracking-wide border border-rose-300 text-rose-600 rounded-full px-5 py-2.5 hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-colors -mt-10 whitespace-nowrap"
+            >
+              VIEW ALL
+            </Link>
+          )}
         </div>
 
         <div className="relative">
@@ -58,14 +61,20 @@ export default function CategoryProductRow({ category, eyebrow, tinted = false }
             ref={scrollerRef}
             className="flex gap-5 overflow-x-auto no-scrollbar pb-2 -mx-1 px-1"
           >
-            {items.map((p) => (
-              <div key={p.id} className="min-w-[220px] sm:min-w-[240px] flex-1">
-                <ProductCard product={p} />
-              </div>
-            ))}
+            {loading
+              ? Array.from({ length: 4 }, (_, i) => (
+                  <div key={i} className="min-w-[220px] sm:min-w-[240px] flex-1">
+                    <ProductCardSkeleton />
+                  </div>
+                ))
+              : items.map((p) => (
+                  <div key={p.id} className="min-w-[220px] sm:min-w-[240px] flex-1">
+                    <ProductCard product={p} />
+                  </div>
+                ))}
           </div>
 
-          {items.length > 4 && (
+          {!loading && items.length > 4 && (
             <>
               <button
                 onClick={() => scroll(-1)}
@@ -85,12 +94,14 @@ export default function CategoryProductRow({ category, eyebrow, tinted = false }
           )}
         </div>
 
-        <Link
-          to={`/shop?category=${category.id}`}
-          className="sm:hidden mt-6 inline-block w-full text-center text-xs font-semibold tracking-wide border border-rose-300 text-rose-600 rounded-full px-5 py-2.5"
-        >
-          VIEW ALL
-        </Link>
+        {!loading && (
+          <Link
+            to={`/shop?category=${category.id}`}
+            className="sm:hidden mt-6 inline-block w-full text-center text-xs font-semibold tracking-wide border border-rose-300 text-rose-600 rounded-full px-5 py-2.5"
+          >
+            VIEW ALL
+          </Link>
+        )}
       </div>
     </section>
   );
