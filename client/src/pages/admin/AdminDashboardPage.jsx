@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Package, Tags, Users, AlertTriangle, XCircle } from 'lucide-react';
+import { Package, Tags, Users, AlertTriangle, XCircle, Boxes } from 'lucide-react';
 import { fetchDashboardStats } from '../../api/misc.js';
 import Loader from '../../components/common/Loader.jsx';
 
@@ -20,6 +20,7 @@ export default function AdminDashboardPage() {
 
   const cards = [
     { label: 'Total Products', value: stats.totalProducts, icon: Package },
+    { label: 'Total Stock', value: stats.totalStock, icon: Boxes },
     { label: 'Total Categories', value: stats.totalCategories, icon: Tags },
     { label: 'Customers', value: stats.totalCustomers, icon: Users },
     { label: 'Out of Stock', value: stats.outOfStock, icon: XCircle },
@@ -29,7 +30,7 @@ export default function AdminDashboardPage() {
     <div>
       <h1 className="font-display text-3xl text-ink mb-8">Dashboard</h1>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-10">
         {cards.map(({ label, value, icon: Icon }) => (
           <div key={label} className="bg-white border border-rose-100 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
@@ -49,9 +50,12 @@ export default function AdminDashboardPage() {
           ) : (
             <div className="space-y-3">
               {productsByCategory.map((c) => (
-                <div key={c.id} className="flex justify-between text-sm">
+                <div key={c.id} className="flex justify-between items-baseline text-sm">
                   <span className="text-ink">{c.name}</span>
-                  <span className="font-medium text-inkmuted">{c.count} product(s)</span>
+                  <span className="text-right">
+                    <span className="font-medium text-inkmuted">{c.count} product(s)</span>
+                    <span className="text-xs text-rose-600 ml-2">{c.totalStock} in stock</span>
+                  </span>
                 </div>
               ))}
             </div>
