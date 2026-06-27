@@ -4,7 +4,7 @@ export default function AboutPage() {
   return (
     <StaticPage title="About Us">
       <p>
-        Bride Store began with a simple belief: every bride deserves to feel like royalty on her
+        Swastik Creations began with a simple belief: every bride deserves to feel like royalty on her
         big day, without compromise on craftsmanship, comfort, or cost.
       </p>
       <p>
@@ -14,7 +14,7 @@ export default function AboutPage() {
         after.
       </p>
       <p>
-        We work directly with artisans across Jaipur, Varanasi, and Surat to bring you authentic
+        We work directly with artisans across Ncr, Varanasi, and Surat to bring you authentic
         craftsmanship, fair pricing, and a shopping experience as joyful as the occasion itself.
       </p>
     </StaticPage>
