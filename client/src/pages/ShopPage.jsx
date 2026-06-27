@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
 import ProductCard from '../components/product/ProductCard.jsx';
 import ShopFilters from '../components/product/ShopFilters.jsx';
-import Loader from '../components/common/Loader.jsx';
+import { ProductGridSkeleton } from '../components/common/Skeleton.jsx';
 import EmptyState from '../components/common/EmptyState.jsx';
 import { fetchProducts } from '../api/products.js';
 import { fetchCategories } from '../api/categories.js';
@@ -113,7 +113,7 @@ export default function ShopPage() {
 
         <div className="min-w-0">
           {loading ? (
-            <Loader label="Finding beautiful things..." />
+            <ProductGridSkeleton count={6} />
           ) : products.length === 0 ? (
             <EmptyState
               title="No products found"
