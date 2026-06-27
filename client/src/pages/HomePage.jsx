@@ -69,7 +69,7 @@ export default function HomePage() {
         <QuizBanner />
       </Reveal>
 
-      <ExclusiveBanner />
+     
 
       <Reveal>
         <Testimonials testimonials={testimonials} />
