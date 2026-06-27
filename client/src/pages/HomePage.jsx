@@ -48,6 +48,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+        <Reveal>
+        <QuizBanner />
+      </Reveal>
 
       <Reveal>
         <CategoryGrid categories={categories} />
@@ -65,9 +68,7 @@ export default function HomePage() {
         </Reveal>
       ))}
 
-      <Reveal>
-        <QuizBanner />
-      </Reveal>
+    
 
      
 
