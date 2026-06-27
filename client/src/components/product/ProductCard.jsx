@@ -7,6 +7,7 @@ import { formatPrice, discountPercent } from '../../utils/format.js';
 import VisitStoreModal from './VisitStoreModal.jsx';
 import SparkleBurst from '../common/SparkleBurst.jsx';
 import QuickViewModal from '../common/QuickViewModal.jsx';
+import StarRating from '../common/StarRating.jsx';
 
 export default function ProductCard({ product }) {
   const [storeModalOpen, setStoreModalOpen] = useState(false);
@@ -71,6 +72,15 @@ export default function ProductCard({ product }) {
             {product.name}
           </h3>
         </Link>
+
+        {/* Star rating below product name */}
+        {(product.reviewCount > 0) && (
+          <div className="flex items-center gap-1.5 mt-1">
+            <StarRating rating={product.rating} size={11} />
+            <span className="text-[11px] text-inkmuted">({product.reviewCount})</span>
+          </div>
+        )}
+
         <div className="mt-1.5 min-w-0">
           <div className="flex items-baseline gap-2 flex-wrap">
             <span className="text-sm font-semibold text-ink whitespace-nowrap">{formatPrice(product.price)}</span>
