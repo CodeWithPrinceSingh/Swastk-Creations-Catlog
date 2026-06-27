@@ -22,7 +22,7 @@ export default function AdminTestimonialsPage() {
         setPending(pendRes.testimonials || []);
         setApproved(appRes.testimonials || []);
       })
-      .catch(() => showToast('Data load nahi ho saka.', { type: 'error' }))
+      .catch(() => showToast('Could not load testimonials.', { type: 'error' }))
       .finally(() => setLoading(false));
   };
 
@@ -31,20 +31,20 @@ export default function AdminTestimonialsPage() {
   const handleApprove = async (id) => {
     try {
       await approveTestimonial(id);
-      showToast('Review approve ho gaya!', { type: 'success' });
+      showToast('Review approved!', { type: 'success' });
       load();
     } catch {
-      showToast('Approve nahi ho saka.', { type: 'error' });
+      showToast('Could not approve review.', { type: 'error' });
     }
   };
 
   const handleDelete = async (id) => {
     try {
       await deleteTestimonial(id);
-      showToast('Review delete ho gaya.', { type: 'info' });
+      showToast('Review deleted.', { type: 'info' });
       load();
     } catch {
-      showToast('Delete nahi ho saka.', { type: 'error' });
+      showToast('Could not delete review.', { type: 'error' });
     }
   };
 
@@ -52,7 +52,7 @@ export default function AdminTestimonialsPage() {
 
   return (
     <div className="p-6 max-w-4xl">
-      <h1 className="font-display text-2xl text-ink mb-8">Testimonials Manage Karein</h1>
+      <h1 className="font-display text-2xl text-ink mb-8">Manage Testimonials</h1>
 
       {/* Pending */}
       <section className="mb-12">
@@ -66,7 +66,7 @@ export default function AdminTestimonialsPage() {
         </h2>
 
         {pending.length === 0 ? (
-          <p className="text-sm text-inkmuted">Koi pending review nahi hai.</p>
+          <p className="text-sm text-inkmuted">No pending reviews.</p>
         ) : (
           <div className="space-y-4">
             {pending.map((t) => (
@@ -84,9 +84,11 @@ export default function AdminTestimonialsPage() {
 
       {/* Approved */}
       <section>
-        <h2 className="text-base font-semibold text-ink mb-4">Approved Reviews ({approved.length})</h2>
+        <h2 className="text-base font-semibold text-ink mb-4">
+          Approved Reviews ({approved.length})
+        </h2>
         {approved.length === 0 ? (
-          <p className="text-sm text-inkmuted">Koi approved review nahi.</p>
+          <p className="text-sm text-inkmuted">No approved reviews yet.</p>
         ) : (
           <div className="space-y-4">
             {approved.map((t) => (
