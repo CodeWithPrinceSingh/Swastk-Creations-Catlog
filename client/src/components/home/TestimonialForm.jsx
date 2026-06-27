@@ -25,11 +25,11 @@ export default function TestimonialForm() {
 
   const handleSubmit = async () => {
     if (!rating) {
-      showToast('Pehle star rating choose karein.', { type: 'error' });
+      showToast('Please select a star rating.', { type: 'error' });
       return;
     }
     if (!quote.trim()) {
-      showToast('Apna experience likhein.', { type: 'error' });
+      showToast('Please write your experience.', { type: 'error' });
       return;
     }
     setSubmitting(true);
@@ -37,7 +37,7 @@ export default function TestimonialForm() {
       await submitTestimonial({ rating, location, quote });
       setDone(true);
     } catch (err) {
-      showToast(err?.response?.data?.message || 'Submit nahi ho saka, dobara try karein.', {
+      showToast(err?.response?.data?.message || 'Could not submit. Please try again.', {
         type: 'error',
       });
     } finally {
@@ -48,10 +48,8 @@ export default function TestimonialForm() {
   if (!user) {
     return (
       <p className="text-center text-sm text-inkmuted mt-8">
-        <a href="/login" className="text-rose-600 underline font-medium">
-          Login karein
-        </a>{' '}
-        apna experience share karne ke liye.
+        <a href="/login" className="text-rose-600 underline font-medium">Sign in</a>{' '}
+        to share your experience.
       </p>
     );
   }
@@ -64,7 +62,7 @@ export default function TestimonialForm() {
           className="inline-flex items-center gap-2 border border-rose-300 text-rose-600 hover:bg-rose-50 transition-colors text-sm font-semibold px-5 py-2.5 rounded-full"
         >
           <MessageSquarePlus size={15} />
-          Apna experience share karein
+          Share Your Experience
         </button>
       ) : (
         <div className="max-w-lg mx-auto bg-white border border-rose-100 rounded-2xl p-7 shadow-card text-left relative">
@@ -79,43 +77,43 @@ export default function TestimonialForm() {
           {done ? (
             <div className="text-center py-4">
               <p className="text-2xl mb-2">🎉</p>
-              <p className="font-semibold text-ink">Shukriya, {user.name}!</p>
+              <p className="font-semibold text-ink">Thank you, {user.name}!</p>
               <p className="text-sm text-inkmuted mt-1">
-                Aapka review mila. Admin approval ke baad homepage par dikhega.
+                Your review has been received and will appear on the homepage after admin approval.
               </p>
               <button
                 onClick={() => { reset(); setOpen(false); }}
                 className="mt-5 text-sm text-rose-600 underline"
               >
-                Theek hai
+                Close
               </button>
             </div>
           ) : (
             <>
-              <h3 className="font-semibold text-ink mb-5 text-base">Apna experience likhein</h3>
+              <h3 className="font-semibold text-ink mb-5 text-base">Write a Review</h3>
 
               <div className="mb-4">
-                <p className="text-xs text-inkmuted mb-1">Rating *</p>
+                <p className="text-xs text-inkmuted mb-1">Your rating *</p>
                 <StarRating rating={rating} size={24} interactive onChange={setRating} />
               </div>
 
               <div className="mb-3">
-                <label className="text-xs text-inkmuted block mb-1">Aapka shahar (optional)</label>
+                <label className="text-xs text-inkmuted block mb-1">Your city (optional)</label>
                 <input
                   type="text"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Jaise: Delhi, Jaipur…"
+                  placeholder="e.g. Delhi, Jaipur…"
                   className="w-full border border-rose-200 rounded-md px-3 py-2 text-sm text-ink placeholder:text-inkmuted focus:outline-none focus:ring-1 focus:ring-rose-400"
                 />
               </div>
 
               <div className="mb-5">
-                <label className="text-xs text-inkmuted block mb-1">Aapka review *</label>
+                <label className="text-xs text-inkmuted block mb-1">Your review *</label>
                 <textarea
                   value={quote}
                   onChange={(e) => setQuote(e.target.value)}
-                  placeholder="Apna experience yahaan likhein…"
+                  placeholder="Share your experience here…"
                   rows={4}
                   className="w-full border border-rose-200 rounded-md px-3 py-2 text-sm text-ink placeholder:text-inkmuted focus:outline-none focus:ring-1 focus:ring-rose-400 resize-none"
                 />
@@ -126,10 +124,10 @@ export default function TestimonialForm() {
                 disabled={submitting}
                 className="w-full bg-rose-600 hover:bg-rose-700 disabled:opacity-50 transition-colors text-white text-sm font-semibold py-3 rounded-md"
               >
-                {submitting ? 'Submit ho raha hai…' : 'Review Submit Karein'}
+                {submitting ? 'Submitting…' : 'Submit Review'}
               </button>
               <p className="text-xs text-inkmuted mt-3 text-center">
-                Review approval ke baad homepage par dikhega.
+                Your review will be visible after admin approval.
               </p>
             </>
           )}
