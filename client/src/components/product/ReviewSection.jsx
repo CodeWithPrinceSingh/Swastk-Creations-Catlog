@@ -5,6 +5,32 @@ import { fetchReviews, submitReview, deleteReview } from '../../api/reviews.js';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 
+// Self-contained interactive star picker — no external component
+function StarPicker({ value, onChange }) {
+  const [hov, setHov] = useState(0);
+  const active = hov || value;
+  return (
+    <div style={{ display: 'flex', gap: 4 }} onMouseLeave={() => setHov(0)}>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <span
+          key={n}
+          onMouseEnter={() => setHov(n)}
+          onClick={() => onChange(n)}
+          style={{
+            fontSize: 28,
+            cursor: 'pointer',
+            color: n <= active ? '#f59e0b' : '#fbcfe8',
+            userSelect: 'none',
+            lineHeight: 1,
+          }}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function ReviewSection({ productId, onRatingUpdate }) {
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -41,12 +67,10 @@ export default function ReviewSection({ productId, onRatingUpdate }) {
         title: formTitle,
         body: formBody,
       });
-
       setReviews((prev) => {
         const without = prev.filter((r) => r.user !== review.user);
         return [review, ...without];
       });
-
       setFormRating(0);
       setFormTitle('');
       setFormBody('');
@@ -74,7 +98,6 @@ export default function ReviewSection({ productId, onRatingUpdate }) {
     <section className="mt-16 border-t border-rose-100 pt-10">
       <h2 className="font-display text-2xl text-ink mb-8">Customer Reviews</h2>
 
-      {/* Write / update a review */}
       {user ? (
         <div className="bg-blush rounded-xl p-6 mb-10">
           <h3 className="text-sm font-semibold text-ink mb-4">
@@ -82,13 +105,11 @@ export default function ReviewSection({ productId, onRatingUpdate }) {
           </h3>
 
           <div className="mb-4">
-            <p className="text-xs text-inkmuted mb-1">Your rating *</p>
-            <StarRating
-              rating={formRating || myReview?.rating || 0}
-              size={22}
-              interactive
-              onChange={setFormRating}
-            />
+            <p className="text-xs text-inkmuted mb-2">Your rating *</p>
+            <StarPicker value={formRating || myReview?.rating || 0} onChange={setFormRating} />
+            {formRating > 0 && (
+              <p className="text-xs text-amber-600 mt-1">{formRating} / 5 selected</p>
+            )}
           </div>
 
           <input
@@ -121,7 +142,6 @@ export default function ReviewSection({ productId, onRatingUpdate }) {
         </p>
       )}
 
-      {/* Review list */}
       {loading ? (
         <p className="text-sm text-inkmuted">Loading reviews…</p>
       ) : reviews.length === 0 ? (
@@ -133,24 +153,13 @@ export default function ReviewSection({ productId, onRatingUpdate }) {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <StarRating rating={r.rating} size={14} />
-                  {r.title && (
-                    <p className="text-sm font-semibold text-ink mt-1">{r.title}</p>
-                  )}
+                  {r.title && <p className="text-sm font-semibold text-ink mt-1">{r.title}</p>}
                   <p className="text-xs text-inkmuted mt-0.5">
-                    {r.userName} ·{' '}
-                    {new Date(r.createdAt).toLocaleDateString('en-IN', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
+                    {r.userName} · {new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </p>
                 </div>
                 {user && (user.id === r.user || user.role === 'admin') && (
-                  <button
-                    onClick={() => handleDelete(r.id)}
-                    aria-label="Delete review"
-                    className="text-rose-300 hover:text-rose-600 transition-colors mt-0.5 shrink-0"
-                  >
+                  <button onClick={() => handleDelete(r.id)} className="text-rose-300 hover:text-rose-600 transition-colors mt-0.5 shrink-0">
                     <Trash2 size={15} />
                   </button>
                 )}
