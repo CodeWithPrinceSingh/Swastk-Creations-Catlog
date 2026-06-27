@@ -4,9 +4,11 @@ import { useWishlist } from '../../context/WishlistContext.jsx';
 import { Heart, Store } from 'lucide-react';
 import { formatPrice, discountPercent } from '../../utils/format.js';
 import VisitStoreModal from './VisitStoreModal.jsx';
+import SparkleBurst from '../common/SparkleBurst.jsx';
 
 export default function ProductCard({ product }) {
   const [storeModalOpen, setStoreModalOpen] = useState(false);
+  const [sparkleTrigger, setSparkleTrigger] = useState(0);
   const { addToWishlist, isWishlisted } = useWishlist();
 
   const wishlisted = isWishlisted(product);
@@ -27,14 +29,19 @@ export default function ProductCard({ product }) {
           className="w-full h-full max-w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <button
-         onClick={(e) => {
-  e.preventDefault();
-  addToWishlist(product);
-}}
+          onClick={(e) => {
+            e.preventDefault();
+            if (!wishlisted) setSparkleTrigger((t) => t + 1);
+            addToWishlist(product);
+          }}
           aria-label="Add to wishlist"
           className="absolute top-3 right-3 z-10 bg-white/90 rounded-full p-2 hover:bg-white transition-colors"
         >
-          <Heart size={15} className={wishlisted ? 'text-rose-600 fill-rose-600' : 'text-ink'} />
+          <Heart
+            size={15}
+            className={`transition-transform ${wishlisted ? 'text-rose-600 fill-rose-600 scale-110' : 'text-ink'}`}
+          />
+          <SparkleBurst trigger={sparkleTrigger} />
         </button>
       </Link>
 
