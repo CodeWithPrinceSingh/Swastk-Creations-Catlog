@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Package, Tags, Users, MessageSquare, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, Package, Tags, Users, MessageSquare, Star, ArrowLeft } from 'lucide-react';
 
 const navItems = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
@@ -7,6 +7,7 @@ const navItems = [
   { to: '/admin/categories', label: 'Categories', icon: Tags },
   { to: '/admin/customers', label: 'Customers', icon: Users },
   { to: '/admin/messages', label: 'Messages', icon: MessageSquare },
+  { to: '/admin/testimonials', label: 'Testimonials', icon: Star },
 ];
 
 export default function AdminLayout() {
