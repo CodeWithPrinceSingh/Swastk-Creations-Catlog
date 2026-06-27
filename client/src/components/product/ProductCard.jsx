@@ -1,18 +1,31 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useWishlist } from '../../context/WishlistContext.jsx';
-import { Heart, Store } from 'lucide-react';
+import { useToast } from '../../context/ToastContext.jsx';
+import { Heart, Store, Eye } from 'lucide-react';
 import { formatPrice, discountPercent } from '../../utils/format.js';
 import VisitStoreModal from './VisitStoreModal.jsx';
 import SparkleBurst from '../common/SparkleBurst.jsx';
+import QuickViewModal from '../common/QuickViewModal.jsx';
 
 export default function ProductCard({ product }) {
   const [storeModalOpen, setStoreModalOpen] = useState(false);
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
   const [sparkleTrigger, setSparkleTrigger] = useState(0);
   const { addToWishlist, isWishlisted } = useWishlist();
+  const { showToast } = useToast();
 
   const wishlisted = isWishlisted(product);
   const discount = discountPercent(product.price, product.compareAtPrice);
+
+  const handleWishlistClick = (e) => {
+    e.preventDefault();
+    if (!wishlisted) setSparkleTrigger((t) => t + 1);
+    addToWishlist(product);
+    showToast(wishlisted ? 'Removed from wishlist' : 'Added to wishlist', {
+      type: wishlisted ? 'info' : 'success',
+    });
+  };
 
   return (
     <div className="group min-w-0">
@@ -29,11 +42,7 @@ export default function ProductCard({ product }) {
           className="w-full h-full max-w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            if (!wishlisted) setSparkleTrigger((t) => t + 1);
-            addToWishlist(product);
-          }}
+          onClick={handleWishlistClick}
           aria-label="Add to wishlist"
           className="absolute top-3 right-3 z-10 bg-white/90 rounded-full p-2 hover:bg-white transition-colors"
         >
@@ -42,6 +51,17 @@ export default function ProductCard({ product }) {
             className={`transition-transform ${wishlisted ? 'text-rose-600 fill-rose-600 scale-110' : 'text-ink'}`}
           />
           <SparkleBurst trigger={sparkleTrigger} />
+        </button>
+
+        {/* Quick View — appears on hover (desktop) */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setQuickViewOpen(true);
+          }}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 bg-white/95 text-ink text-xs font-semibold px-4 py-2 rounded-full opacity-0 sm:group-hover:opacity-100 translate-y-2 sm:group-hover:translate-y-0 transition-all"
+        >
+          <Eye size={13} /> Quick View
         </button>
       </Link>
 
@@ -79,6 +99,13 @@ export default function ProductCard({ product }) {
         open={storeModalOpen}
         onClose={() => setStoreModalOpen(false)}
         productName={product.name}
+      />
+
+      <QuickViewModal
+        product={product}
+        open={quickViewOpen}
+        onClose={() => setQuickViewOpen(false)}
+        onVisitStore={() => setStoreModalOpen(true)}
       />
     </div>
   );
