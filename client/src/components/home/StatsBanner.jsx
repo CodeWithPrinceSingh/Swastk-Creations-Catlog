@@ -1,10 +1,10 @@
 import useCountUp from '../../hooks/useCountUp.js';
 
 const stats = [
-  { end: 500, suffix: '+', label: 'Happy Brides' },
+  { end: 50, suffix: '+', label: 'Happy Brides' },
   { end: 1200, suffix: '+', label: 'Outfits Crafted' },
-  { end: 8, suffix: '', label: 'Years of Trust' },
-  { end: 50, suffix: '+', label: 'Cities Served' },
+  { end: 1, suffix: '', label: 'Years of Trust' },
+  { end: 1, suffix: '+', label: 'Cities Served' },
 ];
 
 export default function StatsBanner() {
