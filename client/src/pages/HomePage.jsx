@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import Hero from '../components/home/Hero.jsx';
 import CategoryGrid from '../components/home/CategoryGrid.jsx';
+import StatsBanner from '../components/home/StatsBanner.jsx';
 import FeaturedProducts from '../components/home/FeaturedProducts.jsx';
 import CategoryProductRow from '../components/home/CategoryProductRow.jsx';
+import QuizBanner from '../components/home/QuizBanner.jsx';
 import ExclusiveBanner from '../components/home/ExclusiveBanner.jsx';
 import Testimonials from '../components/home/Testimonials.jsx';
 import NewsletterStrip from '../components/layout/NewsletterStrip.jsx';
 import Loader from '../components/common/Loader.jsx';
+import Reveal from '../components/common/Reveal.jsx';
 import { fetchCategories } from '../api/categories.js';
 import { fetchFeaturedProducts } from '../api/products.js';
 import { fetchTestimonials } from '../api/misc.js';
@@ -45,20 +48,33 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <CategoryGrid categories={categories} />
-      <FeaturedProducts products={products} />
+
+      <Reveal>
+        <CategoryGrid categories={categories} />
+      </Reveal>
+
+      <StatsBanner />
+
+      <Reveal>
+        <FeaturedProducts products={products} />
+      </Reveal>
 
       {categories.map((cat, index) => (
-        <CategoryProductRow
-          key={cat.id}
-          category={cat}
-          eyebrow="HANDPICKED FOR YOU"
-          tinted={index % 2 === 0}
-        />
+        <Reveal key={cat.id} direction={index % 2 === 0 ? 'left' : 'right'}>
+          <CategoryProductRow category={cat} eyebrow="HANDPICKED FOR YOU" tinted={index % 2 === 0} />
+        </Reveal>
       ))}
 
+      <Reveal>
+        <QuizBanner />
+      </Reveal>
+
       <ExclusiveBanner />
-      <Testimonials testimonials={testimonials} />
+
+      <Reveal>
+        <Testimonials testimonials={testimonials} />
+      </Reveal>
+
       <NewsletterStrip />
     </>
   );
