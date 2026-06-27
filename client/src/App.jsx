@@ -23,6 +23,7 @@ import AdminProductsPage from './pages/admin/AdminProductsPage.jsx';
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage.jsx';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage.jsx';
 import AdminMessagesPage from './pages/admin/AdminMessagesPage.jsx';
+import AdminTestimonialsPage from './pages/admin/AdminTestimonialsPage.jsx';
 
 export default function App() {
   return (
@@ -61,6 +62,7 @@ export default function App() {
             <Route path="categories" element={<AdminCategoriesPage />} />
             <Route path="customers" element={<AdminCustomersPage />} />
             <Route path="messages" element={<AdminMessagesPage />} />
+            <Route path="testimonials" element={<AdminTestimonialsPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
