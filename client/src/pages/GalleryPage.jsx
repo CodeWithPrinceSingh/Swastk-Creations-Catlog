@@ -17,7 +17,7 @@ export default function GalleryPage() {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {galleryImages.map((src, i) => (
           <div key={i} className="aspect-square rounded-lg overflow-hidden bg-blush">
-            <img src={src} alt="" className="w-fit h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
+            <img src={src} alt="" className="w-full h-fit object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
           </div>
         ))}
       </div>
