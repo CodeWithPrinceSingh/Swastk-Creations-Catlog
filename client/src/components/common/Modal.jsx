@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function Modal({ open, onClose, title, children }) {
   // Lock body scroll while modal is open
@@ -16,7 +17,7 @@ export default function Modal({ open, onClose, title, children }) {
 
   if (!open) return null;
 
-  return (
+  const modalContent = (
     <div
       style={{
         position: 'fixed',
@@ -74,4 +75,6 @@ export default function Modal({ open, onClose, title, children }) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
