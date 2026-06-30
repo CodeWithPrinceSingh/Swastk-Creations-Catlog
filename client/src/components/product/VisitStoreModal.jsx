@@ -30,7 +30,7 @@ export default function VisitStoreModal({ open, onClose, productName }) {
       {loading || !store ? (
         <p className="text-sm text-inkmuted py-6 text-center">Loading store details...</p>
       ) : (
-        <div className="space-y-5 h-full">
+        <div className="space-y-5 h-fit">
           {productName && (
             <p className="text-sm text-ink bg-blush rounded-md px-4 py-3">
               Interested in <span className="font-semibold">{productName}</span>? Visit us in
