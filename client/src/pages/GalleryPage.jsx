@@ -1,5 +1,5 @@
 const galleryImages = [
-  '	https://instagram.fdel27-3.fna.fbcdn.net/v/t51.827…OeCJLRrl1WCjhlKo9S3uk0k1kZBukXcrTwwYg&oe=6A494529',
+  'https://instagram.fdel27-3.fna.fbcdn.net/v/t51.827…OeCJLRrl1WCjhlKo9S3uk0k1kZBukXcrTwwYg&oe=6A494529',
   'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600',
   'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600',
   'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600',
