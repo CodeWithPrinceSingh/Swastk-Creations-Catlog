@@ -13,13 +13,13 @@ export default function Modal({ open, onClose, title, children }) {
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-ink/40" onClick={onClose} />
+    <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto">
+      <div className="fixed inset-0 bg-ink/40" onClick={onClose} />
       <div
         ref={scrollRef}
-        className="relative bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 shadow-cardHover"
+        className="relative bg-white rounded-xl w-full max-w-lg my-8 sm:my-0 max-h-[85vh] overflow-y-auto p-6 shadow-cardHover"
       >
-        <div className="flex justify-between items-center mb-5">
+        <div className="flex justify-between items-center mb-5 sticky -top-6 -mt-6 -mx-6 px-6 pt-6 pb-3 bg-white z-10">
           <h2 className="font-display text-xl text-ink">{title}</h2>
           <button onClick={onClose} aria-label="Close">
             <X size={20} className="text-inkmuted hover:text-ink" />
