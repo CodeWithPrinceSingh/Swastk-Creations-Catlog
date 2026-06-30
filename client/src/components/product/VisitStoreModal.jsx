@@ -30,7 +30,7 @@ export default function VisitStoreModal({ open, onClose, productName }) {
       {loading || !store ? (
         <p className="text-sm text-inkmuted py-6 text-center">Loading store details...</p>
       ) : (
-        <div className="space-y-5 h-fit">
+        <div className="space-y-5">
           {productName && (
             <p className="text-sm text-ink bg-blush rounded-md px-4 py-3">
               Interested in <span className="font-semibold">{productName}</span>? Visit us in
@@ -38,13 +38,13 @@ export default function VisitStoreModal({ open, onClose, productName }) {
             </p>
           )}
 
-          <div className="rounded-lg overflow-hidden border border-rose-100 h-48">
+          <div className="rounded-lg overflow-hidden border border-rose-100" style={{ height: '200px', minHeight: '200px' }}>
             <iframe
               title="Store location map"
               src={store.mapEmbedUrl}
               width="100%"
-              height="100%"
-              style={{ border: 0 }}
+              height="200"
+              style={{ border: 0, display: 'block' }}
               loading="lazy"
             />
           </div>
