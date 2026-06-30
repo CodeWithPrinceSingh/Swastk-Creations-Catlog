@@ -49,7 +49,7 @@ export default function Hero() {
   const slide = slides[index];
 
   return (
-    <section className="relative h-[1000px] sm:h-[780px] overflow-hidden">
+    <section className="relative h-[500px] sm:h-[780px] overflow-hidden">
       {slides.map((s, i) => (
         <img
           key={i}
