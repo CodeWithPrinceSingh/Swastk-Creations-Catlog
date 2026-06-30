@@ -17,10 +17,10 @@ export default function Modal({ open, onClose, title, children }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-center p-4 py-10 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="fixed inset-0 bg-ink/40" onClick={onClose} />
 
-      <div className="relative bg-white rounded-xl w-full max-w-lg shadow-cardHover flex flex-col max-h-full">
+      <div className="relative bg-white rounded-xl w-full max-w-lg shadow-cardHover flex flex-col max-h-[85vh]">
         {/* Header — always visible, never scrolls away */}
         <div className="flex justify-between items-center px-6 py-5 border-b border-rose-50 shrink-0">
           <h2 className="font-display text-xl text-ink">{title}</h2>
