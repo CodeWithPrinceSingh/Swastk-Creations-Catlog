@@ -56,7 +56,7 @@ export default function Hero() {
           src={s.image}
           alt=""
           aria-hidden={i !== index}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+          className={`absolute inset-0 w-fit h-fit object-cover transition-opacity duration-700 ${
             i === index ? 'opacity-100' : 'opacity-0'
           }`}
         />
