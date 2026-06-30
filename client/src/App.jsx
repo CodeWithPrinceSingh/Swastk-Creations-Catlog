@@ -4,6 +4,7 @@ import Footer from './components/layout/Footer.jsx';
 import AnnouncementBar from './components/layout/AnnouncementBar.jsx';
 import { AdminRoute } from './components/auth/RouteGuards.jsx';
 import ScrollToTop from './components/common/ScrollToTop.jsx';
+import InstallPrompt from './components/common/InstallPrompt.jsx';
 
 import HomePage from './pages/HomePage.jsx';
 import ShopPage from './pages/ShopPage.jsx';
@@ -23,7 +24,6 @@ import AdminProductsPage from './pages/admin/AdminProductsPage.jsx';
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage.jsx';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage.jsx';
 import AdminMessagesPage from './pages/admin/AdminMessagesPage.jsx';
-import AdminTestimonialsPage from './pages/admin/AdminTestimonialsPage.jsx';
 
 export default function App() {
   return (
@@ -62,7 +62,6 @@ export default function App() {
             <Route path="categories" element={<AdminCategoriesPage />} />
             <Route path="customers" element={<AdminCustomersPage />} />
             <Route path="messages" element={<AdminMessagesPage />} />
-            <Route path="testimonials" element={<AdminTestimonialsPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
@@ -70,6 +69,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <InstallPrompt />
     </div>
   );
 }
