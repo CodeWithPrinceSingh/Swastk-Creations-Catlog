@@ -35,7 +35,7 @@ export default function Header() {
             <span className="font-display text-2xl sm:text-3xl tracking-wide text-rose-700 flex items-center gap-1.5">
               <span className="text-gold text-base">卐</span>SWASTIK CREATIONS
             </span>
-            <span className="text-[10px] tracking-widest2 text-inkmuted -mt-0.5 hidden sm:inline">
+            <span className="text-[20px] tracking-widest2 text-inkmuted -mt-0.5 hidden sm:inline">
               आनंद का ताना-बाना
             </span>
           </Link>
