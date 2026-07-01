@@ -36,7 +36,7 @@ export default function Header() {
               <span className="text-gold text-base">卐</span>SWASTIK CREATIONS
             </span>
             <span className="text-[10px] tracking-widest2 text-inkmuted -mt-0.5 hidden sm:inline">
-              Your Dream, Our Creation
+              आनंद का ताना-बाना
             </span>
           </Link>
 
